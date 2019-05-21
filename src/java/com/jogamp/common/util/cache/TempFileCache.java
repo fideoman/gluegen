@@ -81,8 +81,7 @@ public class TempFileCache {
                 _tmpBaseDir = new File(IOUtil.getTempDir(true /* executable */), tmpDirPrefix);
                 _tmpBaseDir = IOUtil.testDir(_tmpBaseDir, true /* create */, false /* executable */); // executable already checked
             } catch (final Exception ex) {
-                System.err.println("Warning: Caught Exception while retrieving executable temp base directory:");
-                ex.printStackTrace();
+                System.err.println("Warning: Caught Exception while retrieving *executable* temp base directory.");
                 staticInitError = true;
             }
             tmpBaseDir = _tmpBaseDir;
@@ -100,7 +99,6 @@ public class TempFileCache {
                     initTmpRoot();
                 } catch (final Exception ex) {
                     System.err.println("Warning: Caught Exception due to initializing TmpRoot:");
-                    ex.printStackTrace();
                     staticInitError = true;
                 }
             }

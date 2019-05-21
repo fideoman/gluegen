@@ -644,6 +644,23 @@ public final class NativeLibrary implements DynamicLookupHelper {
           System.err.println("NativeLibrary.findLibrary(<"+libName+">, "+loader+") (CL): "+res);
         }
     }
+    for (int i = 0; i < suffixes.length; i++) {
+    	if (DEBUG) {
+    		System.err.println("Last resort: Loading libs from classpath...");
+    	}
+    	if (NativeLibrary.class.getClassLoader().getResource(libName + suffixes[i]) != null) {
+    		// Found in Classpath!
+    		if (DEBUG) {
+    			System.err.println("Found lib in: " + NativeLibrary.class.getClassLoader().getResource(libName + suffixes[i]).getFile());
+    		}
+    		try {
+    			java.nio.file.Files.copy(NativeLibrary.class.getClassLoader().getResourceAsStream(libName + suffixes[i]), java.nio.file.Paths.get(System.getProperty("java.io.tmpdir") + java.io.File.separator + libName + suffixes[i]), java.nio.file.StandardCopyOption.REPLACE_EXISTING);
+				res = System.getProperty("java.io.tmpdir") + java.io.File.separator + libName + suffixes[i];
+			} catch (java.io.IOException e) {
+				e.printStackTrace();
+			}
+    	}
+    }
     return res;
   }
 }
